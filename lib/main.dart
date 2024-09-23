@@ -28,8 +28,6 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
 
   int hungerLevel = 50;
 
-  int _imageCounter = 0;
-
   String _currentImage = 'lib/img/cat-nothing.png';
 
   // Function to increase happiness and update hunger when playing with the pet
@@ -46,27 +44,14 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
 
   }
 
-  void _changeCatImage() {
-    setState(() {
-      _imageCounter++;
-      switch (_imageCounter) {
-        case 0:
-          _currentImage = 'lib/img/cat-nothing.png';
-          break;
-        case 1:
-          _currentImage = 'lib/img/2.png';
-          break;
-        case 2:
-          _currentImage = 'lib/img/3.png';
-          break;
-        default:
-          _currentImage = 'lib/img/1.png';
-          break;
-      }
-      if (_imageCounter > 2) {
-        _imageCounter = 0;
-      }
-    });
+  Color _getPetColor() {
+    if (happinessLevel > 70) {
+      return Colors.green;
+    } else if (happinessLevel >= 30 && happinessLevel <= 70) {
+      return Colors.yellow;
+    } else {
+      return Colors.red;
+    }
   }
 
 // Function to decrease hunger and update happiness when feeding the pet
@@ -137,7 +122,13 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
           mainAxisAlignment: MainAxisAlignment.center,
 
           children: <Widget>[
-            Image.asset(_currentImage, width: 400, height: 400,),
+            Image.asset(
+              _currentImage,
+              width: 400,
+              height: 400,
+              color: _getPetColor(),
+              colorBlendMode: BlendMode.modulate,
+            ),
             
             Text(
 
