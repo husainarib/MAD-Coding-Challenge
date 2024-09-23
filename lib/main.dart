@@ -53,7 +53,16 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
       return Colors.red;
     }
   }
-
+  
+  String _getMood() {
+    if (happinessLevel > 70) {
+      return "Happy 😄";
+    } else if (happinessLevel >= 30 && happinessLevel <= 70) {
+      return "Neutral 😐";
+    } else {
+      return "Unhappy 😢";
+    }
+  }
 // Function to decrease hunger and update happiness when feeding the pet
 
   void _feedPet() {
@@ -129,7 +138,8 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
               color: _getPetColor(),
               colorBlendMode: BlendMode.modulate,
             ),
-            
+            SizedBox(height: 20),
+            Text(_getMood(),style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
             Text(
 
               'Name: $petName',
