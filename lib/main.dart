@@ -34,10 +34,17 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
 
   Timer? hungerTimer;
 
+  Timer? happinessTimer;
+
+  int happinessDuration = 0;
+
+  String changeMood = "NOTHING";
+
    @override
   void initState() {
     super.initState();
-    _startHungerTimer(); // Start the hunger timer when the app starts
+    _startHungerTimer();
+    _startHappinessMonitor();
   }
 
   // Function to increase happiness and update hunger when playing with the pet
@@ -64,7 +71,13 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     }
   }
   
-  String _getMood() {
+  String _getMood(String result) {
+     if (result == "WIN") {
+       return "WIN";
+     } else if (result == "LOSE") {
+       return "LOSE";
+     }
+
     if (happinessLevel > 70) {
       return "Happy 😄";
     } else if (happinessLevel >= 30 && happinessLevel <= 70) {
@@ -138,6 +151,28 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     });
   }
 
+  void _startHappinessMonitor() {
+    happinessTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      setState(() {
+        if (happinessLevel > 80) {
+          happinessDuration++;
+        } else {
+          happinessDuration = 0;
+        }
+
+        if (happinessDuration >= 180) {
+          changeMood = "WIN";
+          happinessTimer?.cancel();
+        }
+        // Check the lose condition
+        else if (happinessLevel < 10 && hungerLevel >= 100) {
+          changeMood = "LOSE";
+          happinessTimer?.cancel();
+        }
+      });
+    });
+  }
+
   @override
 
   Widget build(BuildContext context) {
@@ -165,7 +200,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
               colorBlendMode: BlendMode.modulate,
             ),
             SizedBox(height: 20),
-            Text(_getMood(),style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
+            Text(_getMood(changeMood),style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
             Text(
 
               'Name: $petName',
