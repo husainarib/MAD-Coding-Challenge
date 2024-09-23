@@ -30,6 +30,8 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
 
   String _currentImage = 'lib/img/cat-nothing.png';
 
+  final TextEditingController _nameController = TextEditingController();
+
   // Function to increase happiness and update hunger when playing with the pet
 
   void _playWithPet() {
@@ -111,6 +113,12 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
 
   }
 
+  void _namePet() {
+    setState(() {
+      petName = _nameController.text;
+    });
+    _nameController.clear();
+  }
 
   @override
 
@@ -133,8 +141,8 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
           children: <Widget>[
             Image.asset(
               _currentImage,
-              width: 400,
-              height: 400,
+              width: 200,
+              height: 200,
               color: _getPetColor(),
               colorBlendMode: BlendMode.modulate,
             ),
@@ -180,13 +188,26 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
 
             SizedBox(height: 16.0),
 
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter Pet Name',
+                ),
+              ),
+            ),
+
             ElevatedButton(
 
-              onPressed: _feedPet,
+              onPressed: _namePet,
 
-              child: Text('Feed Your Pet'),
+              child: Text('Name Your Pet'),
 
             ),
+
+            SizedBox(height: 16.0),
 
           ],
 
